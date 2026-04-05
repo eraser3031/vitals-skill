@@ -274,7 +274,9 @@ After sufficient conversation, move to the summary phase. Always ask the user fi
 
 After the conversation ends, generate a markdown report and save it as a file.
 
-Save location: `~/.vitals/reports/`
+Save location: `~/.vitals/inbox/`
+
+The Vitals app scans this inbox on startup and matches reports to projects by the `repo` field (the current working directory). Reports that match a project's git connection are automatically moved to that project's folder.
 
 Filename convention (by mode):
 - Checkup: `checkup-{project-name}-{YYYY-MM-DD}.md`
@@ -285,7 +287,7 @@ Filename convention (by mode):
 
 ```markdown
 ---
-project: {project-name}
+repo: {current working directory absolute path}
 mode: {postmortem | emergency | checkup}
 date: {YYYY-MM-DD}
 status: {on-track | in-crisis | abandoned}
