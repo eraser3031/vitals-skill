@@ -58,7 +58,7 @@ The context file has three sections:
 
 **Section 1 — Connected Repos**: Git log, branches, file structure for all connected repos. Use this to understand what the project does and its recent activity.
 
-**Section 2 — Diagnosis Timeline**: Past diagnosis reports for THIS project (up to 5 most recent). Starts with a one-line visual timeline (e.g. `🩺 2026-04-03 → 🚨 2026-04-05`) showing the progression of diagnoses. Each entry includes mode, status, key takeaways, root causes, and one-line summary from previous sessions.
+**Section 2 — Diagnosis Timeline**: Past diagnosis reports for THIS project (up to 5 most recent). Starts with a one-line visual timeline (e.g. `Checkup 2026-04-03 → Emergency 2026-04-05`) showing the progression of diagnoses. Each entry includes mode, status, key takeaways, root causes, and one-line summary from previous sessions.
 
 **Section 3 — Cross-Project Lessons**: Lessons extracted from the user's OTHER projects — only postmortems and emergencies. Each entry includes root causes, key takeaways, and one-line summary.
 
@@ -91,11 +91,11 @@ Use `AskUserQuestion` to determine the mode:
 question: "What's the current state of this project?"
 header: "Diagnosis Mode"
 options:
-  - label: "🩺 Checkup"
+  - label: "Checkup"
     description: "The project is running, but I want to check if it's on the right track"
-  - label: "🚨 Emergency"
+  - label: "Emergency"
     description: "It's stuck or tangled — I'm on the verge of giving up"
-  - label: "⚰️ Postmortem"
+  - label: "Postmortem"
     description: "I've already abandoned this project. I want to know what went wrong"
 ```
 
@@ -103,7 +103,7 @@ Based on the response, branch into three tracks:
 
 ---
 
-### 🩺 Checkup Mode (Ongoing, review purpose)
+### Checkup Mode (Ongoing, review purpose)
 
 **Target**: Project is running but the user wants to verify direction and catch blind spots.
 
@@ -122,7 +122,7 @@ Based on the response, branch into three tracks:
 
 ---
 
-### 🚨 Emergency Mode (Ongoing but in crisis)
+### Emergency Mode (Ongoing but in crisis)
 
 **Target**: Project is stuck, tangled, or motivation has dropped sharply — close to giving up.
 
@@ -148,7 +148,7 @@ Many users hit a wall after rapid AI-driven development. When this pattern is de
 
 ---
 
-### ⚰️ Postmortem Mode (Already abandoned)
+### Postmortem Mode (Already abandoned)
 
 **Target**: Project already abandoned or died naturally. Past tense.
 
@@ -290,23 +290,28 @@ options:
 
 After sufficient conversation, move to the summary phase. Always ask the user first: "Ready to wrap up?"
 
-### Checkup Mode Results
-1. **Health Score** — 🟢 (Good) / 🟡 (Caution) / 🔴 (Critical) per lens
-2. **What's going well** — Give proper recognition
-3. **Areas needing attention** — Things that could become emergencies if neglected
-4. **Recommended actions** — 2–3 concrete, actionable steps
+All modes follow the same 4-step flow. Section 3 (What Went Right) is optional — skip if there's nothing substantive to say.
 
-### Emergency Mode Results
-1. **Core blockers** — The 1–2 things blocking the project right now
-2. **Can it be saved?** — Honest verdict with reasoning
-3. **If saving** — Concrete next steps
-4. **If letting go** — What can be salvaged (skills, code, lessons)
+### 1. Current State
+Where the project stands right now and what the concrete results are.
+- **Checkup**: Health score per lens (Good / Caution / Critical), what's going well, areas needing attention
+- **Emergency**: The 1–2 blockers jamming the project up, how bad the jam is
+- **Postmortem**: How/when the project ended, final state
 
-### Postmortem Mode Results
-1. **Top 3 Root Causes** — Not surface-level, but fundamental root causes
-2. **Contributing factors** — Not core, but influential
-3. **What went right** — A postmortem shouldn't be all negative
-4. **Lessons** — How to do things differently in the next project
+### 2. Cause Analysis (Timeline)
+Walk through how the project got here chronologically, then extract the root causes from that flow.
+- Key phases / turning points / the moment things shifted
+- Top root causes (not surface-level — the underlying ones)
+- Contributing factors (not core, but influential)
+
+### 3. What Went Right (Optional)
+Worth including even in Emergency/Postmortem — it's not all negative. Skip if there's nothing meaningful.
+
+### 4. Action Plan
+Concrete next moves derived from the root causes.
+- **Checkup**: 2–3 recommended actions
+- **Emergency**: Verdict (salvageable / let go) + next steps or salvage list
+- **Postmortem**: Key takeaways and pre-launch checklist for the next project
 
 ---
 
@@ -334,58 +339,81 @@ status: {on-track | in-crisis | abandoned}
 summary: {one-line summary}
 ---
 
-# Project {Checkup/Emergency/Postmortem}: {project-name}
+# {Checkup/Emergency/Postmortem}: {one-line summary}
 
 > Diagnosis date: {date}
 > Project period: {start ~ end/present}
-> Mode: {🩺 Checkup / 🚨 Emergency / ⚰️ Postmortem}
 > Status: {On Track / In Crisis / Abandoned}
 
 ## Project Overview
 {One paragraph summary}
 
-## Diagnosis Results
+## 1. Current State
+{What's happening now and what the concrete result is. One short paragraph, then the mode-specific block below.}
 
 ### [Checkup] Health Scorecard
 | Area | Status | Notes |
 |------|--------|-------|
-| Idea & Problem Definition | 🟢/🟡/🔴 | {one-line comment} |
-| Solution & Design | 🟢/🟡/🔴 | {one-line comment} |
+| Idea & Problem Definition | Good/Caution/Critical | {one-line comment} |
+| Solution & Design | Good/Caution/Critical | {one-line comment} |
 | ... | ... | ... |
 
 ### [Emergency] Core Blockers
-1. **{Blocker}**: {description}
-- **Verdict**: Salvageable / Better to let go
-- **Reasoning**: {why}
+1. **{Blocker}**: {description of what's jamming the project}
+2. **{Blocker}**: {description}
 
-### [Postmortem] Root Causes
-1. **{Cause 1}**: {description}
+### [Postmortem] Final Outcome
+{How and when the project ended — officially quit, gradual fade-out, etc.}
+
+## 2. Cause Analysis (Timeline)
+{Trace how the project got to its current state chronologically, then extract root causes from the flow.}
+
+### Timeline
+- **{Phase / Date}**: {what happened}
+- **{Phase / Date}**: {what happened}
+- **{Turning point}**: {the moment things shifted}
+
+### Root Causes
+1. **{Cause 1}**: {description — underlying, not surface-level}
 2. **{Cause 2}**: {description}
 3. **{Cause 3}**: {description}
 
 ### Contributing Factors
 - {Factors that weren't core but had impact}
 
-### What Went Right
-- {Positive aspects of the project}
+## 3. What Went Right (Optional)
+- {Positive aspects worth keeping in mind}
+- {Skip this section entirely if there's nothing substantive}
 
-## Lessons & Next Project Checklist
+## 4. Action Plan
 
-### Key Takeaways
+### [Checkup] Recommended Actions
+1. {Concrete action tied to a root cause}
+2. {Concrete action}
+3. {Concrete action}
+
+### [Emergency] Verdict & Next Steps
+- **Verdict**: Salvageable / Better to let go
+- **Reasoning**: {why}
+- **If saving — next steps**:
+  1. {Step}
+  2. {Step}
+- **If letting go — what to salvage**: {skills, code snippets, lessons}
+
+### [Postmortem] Lessons & Next Project Checklist
+
+**Key Takeaways**
 1. {Lesson 1}: {concrete action}
 2. {Lesson 2}: {concrete action}
 3. {Lesson 3}: {concrete action}
 
-### Pre-Launch Checklist for Next Project
+**Pre-Launch Checklist for Next Project**
 - [ ] {Check item 1}
 - [ ] {Check item 2}
 - [ ] {Check item 3}
 - [ ] {Check item 4}
-
-## One-Line Summary
-> {The lesson of this project in one sentence}
 ```
 
-Only include sections relevant to the current mode. Among the sections marked [Checkup], [Emergency], [Postmortem] in the template above, include only the one matching the current mode.
+Only include mode-specific blocks relevant to the current mode. Among the sections marked [Checkup], [Emergency], [Postmortem] in the template above, include only the one matching the current mode. The 4-step skeleton (Current State → Cause Analysis → What Went Right → Action Plan) stays the same across all modes. Section 3 is optional — skip if there's nothing meaningful to include.
 
 After saving the report, inform the user of the save path and say "Let me know if you'd like to modify anything."
