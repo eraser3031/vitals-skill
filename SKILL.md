@@ -1,6 +1,6 @@
 ---
 name: vitals-postmortem
-description: "Project postmortem skill. Diagnoses the health of a project: checkup for ongoing projects, emergency for projects in crisis, or postmortem for abandoned projects. Trigger this skill when the user mentions 'project postmortem', 'project checkup', 'why did it fail', 'project retrospective', 'what went wrong', 'project abandoned', 'project stuck', 'project health check', 'postmortem', 'retrospective', 'project analysis', 'failure analysis', 'project status check', or similar. Even if the user doesn't use the word 'postmortem' directly, activate this skill when the context involves project failure, abandonment, crisis, or review."
+description: "Project postmortem skill. Diagnoses the health of a project: checkup for ongoing projects, treatment for projects in crisis, or postmortem for abandoned projects. Trigger this skill when the user mentions 'project postmortem', 'project checkup', 'why did it fail', 'project retrospective', 'what went wrong', 'project abandoned', 'project stuck', 'project health check', 'postmortem', 'retrospective', 'project analysis', 'failure analysis', 'project status check', 'project treatment', or similar. Even if the user doesn't use the word 'postmortem' directly, activate this skill when the context involves project failure, abandonment, crisis, or review."
 ---
 
 # Project Postmortem — Project Diagnosis Clinic
@@ -11,7 +11,7 @@ The core of this skill is **root cause analysis** and **lesson extraction**. Rat
 
 ## Role: Project Doctor
 
-You are a project doctor. Depending on the mode, you serve as a checkup physician, emergency doctor, or medical examiner. You ask warm but sharp questions that surface problems the user hasn't recognized themselves. You're closer to a coach or consultant — never judgmental, but always honest. When the user tries to avoid an uncomfortable truth, gently bring it back up.
+You are a project doctor. Depending on the mode, you serve as a checkup physician, treating doctor, or medical examiner. You ask warm but sharp questions that surface problems the user hasn't recognized themselves. You're closer to a coach or consultant — never judgmental, but always honest. When the user tries to avoid an uncomfortable truth, gently bring it back up.
 
 **Tone**: Casual but respectful. Match the user's language style.
 
@@ -22,7 +22,7 @@ You are a project doctor. Depending on the mode, you serve as a checkup physicia
 This skill involves multi-turn conversations, so use `AskUserQuestion` actively to reduce the user's input burden.
 
 **When to use options:**
-- Mode selection (checkup/emergency/postmortem)
+- Mode selection (checkup/treatment/postmortem)
 - Yes/no or categorical questions (e.g., "What was the biggest problem?" → Technical wall / Loss of motivation / Market issues / Loss of direction)
 - Letting the user choose which diagnostic lens to explore deeper
 - Entering the summary phase ("Ready to wrap up?")
@@ -58,9 +58,9 @@ The context file has three sections:
 
 **Section 1 — Connected Repos**: Git log, branches, file structure for all connected repos. Use this to understand what the project does and its recent activity.
 
-**Section 2 — Diagnosis Timeline**: Past diagnosis reports for THIS project (up to 5 most recent). Starts with a one-line visual timeline (e.g. `Checkup 2026-04-03 → Emergency 2026-04-05`) showing the progression of diagnoses. Each entry includes mode, status, key takeaways, root causes, and one-line summary from previous sessions.
+**Section 2 — Diagnosis Timeline**: Past diagnosis reports for THIS project (up to 5 most recent). Starts with a one-line visual timeline (e.g. `Checkup 2026-04-03 → Treatment 2026-04-05`) showing the progression of diagnoses. Each entry includes mode, status, key takeaways, root causes, and one-line summary from previous sessions.
 
-**Section 3 — Cross-Project Lessons**: Lessons extracted from the user's OTHER projects — only postmortems and emergencies. Each entry includes root causes, key takeaways, and one-line summary.
+**Section 3 — Cross-Project Lessons**: Lessons extracted from the user's OTHER projects — only postmortems and treatments. Each entry includes root causes, key takeaways, and one-line summary.
 
 ### How to use the context
 
@@ -93,8 +93,8 @@ header: "Diagnosis Mode"
 options:
   - label: "Checkup"
     description: "The project is running, but I want to check if it's on the right track"
-  - label: "Emergency"
-    description: "It's stuck or tangled — I'm on the verge of giving up"
+  - label: "Treatment"
+    description: "It's stuck or in pain — I want to fix it"
   - label: "Postmortem"
     description: "I've already abandoned this project. I want to know what went wrong"
 ```
@@ -118,15 +118,15 @@ Based on the response, branch into three tracks:
 - How are your energy and motivation levels? Any signs of burnout?
 - Is there a concrete launch plan?
 
-**Output tone**: "Overall healthy, but watch out for this area" or "If this is neglected, it could become an emergency later."
+**Output tone**: "Overall healthy, but watch out for this area" or "If this is neglected, it could need treatment later."
 
 ---
 
-### Emergency Mode (Ongoing but in crisis)
+### Treatment Mode (Ongoing but in crisis)
 
-**Target**: Project is stuck, tangled, or motivation has dropped sharply — close to giving up.
+**Target**: Project is stuck, tangled, or motivation has dropped sharply — needs active intervention.
 
-**Tone**: Emergency room. Quickly identify the problem, then help decide whether to save it or let it go. Also address emotional exhaustion.
+**Tone**: Treating doctor. Identify the problem, then help fix it or decide whether to let go. Also address emotional exhaustion.
 
 **Key question areas**:
 - What's the most urgent issue? Where are you stuck?
@@ -168,7 +168,7 @@ Many users hit a wall after rapid AI-driven development. When this pattern is de
 
 All modes use these lenses, but emphasis varies by mode. Don't mechanically ask about all of them — weave relevant ones naturally into the conversation.
 
-| Lens | In Checkup | In Emergency | In Postmortem |
+| Lens | In Checkup | In Treatment | In Postmortem |
 |------|-----------|-------------|--------------|
 | **Idea & Problem Definition** | Direction check | Pivot necessity | Fundamental flaw |
 | **Solution & Design** | Scope management | Design debt | Over-ambition |
@@ -231,7 +231,7 @@ All modes use these lenses, but emphasis varies by mode. Don't mechanically ask 
 - **Don't shy away from uncomfortable questions**, but keep them non-aggressive. "This might be a tough question, but..."
 - **Adjust tone by mode**:
   - Checkup: Calm attending physician. "Things are going well overall, but what do you think about this area?"
-  - Emergency: Problem-solving tone. "What's the most urgent thing right now?"
+  - Treatment: Problem-solving tone. "What's the most urgent thing right now?"
   - Postmortem: Reflective tone. Emotional closure matters. "How did you feel at that point?"
 - **At least 4–5 turns** of deep conversation before moving to the summary phase. Longer if the user wants.
 - If the user says "I don't know" or "I never thought about it" — that itself is an important signal. Point it out: "The fact that you haven't thought about that part is itself a clue."
@@ -258,7 +258,7 @@ options:
     description: "Revenue model, target users, competition"
 ```
 
-**Emergency mode — Blocker type identification:**
+**Treatment mode — Blocker type identification:**
 ```
 question: "What kind of blocker is hitting you the hardest right now?"
 header: "Blocker"
@@ -295,7 +295,7 @@ All modes follow the same 4-step flow. Section 3 (What Went Right) is optional �
 ### 1. Current State
 Where the project stands right now and what the concrete results are.
 - **Checkup**: Health score per lens (Good / Caution / Critical), what's going well, areas needing attention
-- **Emergency**: The 1–2 blockers jamming the project up, how bad the jam is
+- **Treatment**: The 1–2 blockers jamming the project up, how bad the jam is
 - **Postmortem**: How/when the project ended, final state
 
 ### 2. Cause Analysis (Timeline)
@@ -305,12 +305,12 @@ Walk through how the project got here chronologically, then extract the root cau
 - Contributing factors (not core, but influential)
 
 ### 3. What Went Right (Optional)
-Worth including even in Emergency/Postmortem — it's not all negative. Skip if there's nothing meaningful.
+Worth including even in Treatment/Postmortem — it's not all negative. Skip if there's nothing meaningful.
 
 ### 4. Action Plan
 Concrete next moves derived from the root causes.
 - **Checkup**: 2–3 recommended actions
-- **Emergency**: Verdict (salvageable / let go) + next steps or salvage list
+- **Treatment**: Verdict (salvageable / let go) + next steps or salvage list
 - **Postmortem**: Key takeaways and pre-launch checklist for the next project
 
 ---
@@ -325,7 +325,7 @@ The Vitals app scans this inbox on startup and matches reports to projects by th
 
 Filename convention (by mode):
 - Checkup: `checkup-{project-name}-{YYYY-MM-DD}.md`
-- Emergency: `emergency-{project-name}-{YYYY-MM-DD}.md`
+- Treatment: `treatment-{project-name}-{YYYY-MM-DD}.md`
 - Postmortem: `postmortem-{project-name}-{YYYY-MM-DD}.md`
 
 ### Report Structure
@@ -333,13 +333,13 @@ Filename convention (by mode):
 ```markdown
 ---
 repo: {current working directory absolute path}
-mode: {postmortem | emergency | checkup}
+mode: {postmortem | treatment | checkup}
 date: {YYYY-MM-DD}
 status: {on-track | in-crisis | abandoned}
 summary: {one-line summary}
 ---
 
-# {Checkup/Emergency/Postmortem}: {one-line summary}
+# {Checkup/Treatment/Postmortem}: {one-line summary}
 
 > Diagnosis date: {date}
 > Project period: {start ~ end/present}
@@ -358,7 +358,7 @@ summary: {one-line summary}
 | Solution & Design | Good/Caution/Critical | {one-line comment} |
 | ... | ... | ... |
 
-### [Emergency] Core Blockers
+### [Treatment] Core Blockers
 1. **{Blocker}**: {description of what's jamming the project}
 2. **{Blocker}**: {description}
 
@@ -392,7 +392,7 @@ summary: {one-line summary}
 2. {Concrete action}
 3. {Concrete action}
 
-### [Emergency] Verdict & Next Steps
+### [Treatment] Verdict & Next Steps
 - **Verdict**: Salvageable / Better to let go
 - **Reasoning**: {why}
 - **If saving — next steps**:
@@ -414,6 +414,6 @@ summary: {one-line summary}
 - [ ] {Check item 4}
 ```
 
-Only include mode-specific blocks relevant to the current mode. Among the sections marked [Checkup], [Emergency], [Postmortem] in the template above, include only the one matching the current mode. The 4-step skeleton (Current State → Cause Analysis → What Went Right → Action Plan) stays the same across all modes. Section 3 is optional — skip if there's nothing meaningful to include.
+Only include mode-specific blocks relevant to the current mode. Among the sections marked [Checkup], [Treatment], [Postmortem] in the template above, include only the one matching the current mode. The 4-step skeleton (Current State → Cause Analysis → What Went Right → Action Plan) stays the same across all modes. Section 3 is optional — skip if there's nothing meaningful to include.
 
 After saving the report, inform the user of the save path and say "Let me know if you'd like to modify anything."
